@@ -1,8 +1,10 @@
 
+
 import TimelineView from "@/components/dashboard/TimelineView";
 import ManualLogForm from "@/components/dashboard/ManualLogForm";
 import SummaryGenerator from "@/components/dashboard/SummaryGenerator";
 import ExportControls from "@/components/dashboard/ExportControls";
+import KeyMetricsCard from "@/components/dashboard/KeyMetricsCard"; // Added import
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GanttChartSquare, BookText, FileText, SettingsIcon, LayoutDashboard } from "lucide-react";
 
@@ -32,6 +34,9 @@ export default function DashboardPage() {
 
         <TabsContent value="dashboard">
           <div className="grid gap-6 md:grid-cols-2">
+            <div className="md:col-span-2">
+              <KeyMetricsCard />
+            </div>
             <div className="md:col-span-2">
               <TimelineView />
             </div>

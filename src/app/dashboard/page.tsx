@@ -1,12 +1,13 @@
 
-
+import KeyMetricsCard from "@/components/dashboard/KeyMetricsCard";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { GanttChartSquare, BookText, FileText, SettingsIcon, LayoutDashboard } from "lucide-react";
 import TimelineView from "@/components/dashboard/TimelineView";
 import ManualLogForm from "@/components/dashboard/ManualLogForm";
 import SummaryGenerator from "@/components/dashboard/SummaryGenerator";
 import ExportControls from "@/components/dashboard/ExportControls";
-import KeyMetricsCard from "@/components/dashboard/KeyMetricsCard"; // Added import
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { GanttChartSquare, BookText, FileText, SettingsIcon, LayoutDashboard } from "lucide-react";
+import DateFilterBar from "@/components/dashboard/DateFilterBar"; // New Import
+import ActivityChart from "@/components/dashboard/ActivityChart"; // New Import
 
 export default function DashboardPage() {
   return (
@@ -33,22 +34,10 @@ export default function DashboardPage() {
         </TabsList>
 
         <TabsContent value="dashboard">
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="md:col-span-2">
-              <KeyMetricsCard />
-            </div>
-            <div className="md:col-span-2">
-              <TimelineView />
-            </div>
-            <div className="md:col-span-2">
-              <ManualLogForm />
-            </div>
-            <div className="md:col-span-2">
-              <SummaryGenerator />
-            </div>
-             <div className="md:col-span-2">
-              <ExportControls />
-            </div>
+          <div className="space-y-6">
+            <DateFilterBar />
+            <KeyMetricsCard />
+            <ActivityChart />
           </div>
         </TabsContent>
         <TabsContent value="timeline">

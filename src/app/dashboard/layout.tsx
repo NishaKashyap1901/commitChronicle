@@ -1,0 +1,41 @@
+import AppHeader from "@/components/layout/AppHeader";
+import { SidebarNav } from "@/components/layout/SidebarNav";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { 
+  SidebarProvider, 
+  Sidebar, 
+  SidebarContent, 
+  SidebarHeader, 
+  SidebarInset, 
+  SidebarTrigger 
+} from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
+import { PanelLeft } from "lucide-react";
+
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <SidebarProvider defaultOpen>
+      <div className="flex min-h-screen w-full flex-col">
+        <AppHeader />
+        <div className="flex flex-1">
+          <Sidebar className="border-r" collapsible="icon">
+            <SidebarContent>
+              <ScrollArea className="h-full py-2">
+                <SidebarNav />
+              </ScrollArea>
+            </SidebarContent>
+          </Sidebar>
+          <SidebarInset className="flex-1">
+            <main className="p-4 sm:p-6 lg:p-8 flex-1">
+              {children}
+            </main>
+          </SidebarInset>
+        </div>
+      </div>
+    </SidebarProvider>
+  );
+}

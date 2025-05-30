@@ -1,5 +1,7 @@
+
 "use client";
 
+import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -42,8 +44,10 @@ const manualLogFormSchema = z.object({
 type ManualLogFormValues = z.infer<typeof manualLogFormSchema>;
 
 const defaultValues: Partial<ManualLogFormValues> = {
-  date: new Date(),
+  // date: new Date(), // Problematic for hydration: server and client `new Date()` can differ.
   type: "task",
+  entry: "", // Initialize all fields for consistency
+  relatedTicket: "",
 };
 
 export default function ManualLogForm() {
@@ -53,6 +57,18 @@ export default function ManualLogForm() {
     defaultValues,
     mode: "onChange",
   });
+
+  React.useEffect(() => {
+    // Set the date only on the client, after initial mount, if it's not already set.
+    // This avoids hydration mismatch for the default new Date().
+    if (!form.getValues("date")) {
+      form.setValue("date", new Date(), {
+        shouldDirty: false, 
+        shouldValidate: false, // Avoid immediate validation if not desired
+      });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run only once on mount
 
   function onSubmit(data: ManualLogFormValues) {
     console.log(data);
@@ -64,7 +80,14 @@ export default function ManualLogForm() {
         </pre>
       ),
     });
-    form.reset();
+    // Reset to defaultValues which now includes an undefined date,
+    // useEffect will then repopulate it client-side for the next entry.
+    form.reset(defaultValues); 
+    // Explicitly set date again after reset using useEffect logic
+    form.setValue("date", new Date(), {
+        shouldDirty: false, 
+        shouldValidate: false,
+    });
   }
 
   return (
@@ -149,7 +172,7 @@ export default function ManualLogForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Log Type</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select log type" />

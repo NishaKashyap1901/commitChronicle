@@ -1,3 +1,4 @@
+
 import SummaryGenerator from "@/components/dashboard/SummaryGenerator";
 
 export default function SummariesPage() {
@@ -7,7 +8,7 @@ export default function SummariesPage() {
        <p className="text-muted-foreground">
         Generate concise weekly reports by providing summaries of your commits, task updates, and manual logs.
       </p>
-      <SummaryGenerator />
+      <SummaryGenerator showCardHeader={false} />
     </div>
   );
 }

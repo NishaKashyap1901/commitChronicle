@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -30,7 +31,11 @@ const summaryGeneratorSchema = z.object({
 
 type SummaryGeneratorFormValues = z.infer<typeof summaryGeneratorSchema>;
 
-export default function SummaryGenerator() {
+interface SummaryGeneratorProps {
+  showCardHeader?: boolean;
+}
+
+export default function SummaryGenerator({ showCardHeader = true }: SummaryGeneratorProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [generatedSummary, setGeneratedSummary] = useState<string | null>(null);
@@ -75,16 +80,18 @@ export default function SummaryGenerator() {
 
   return (
     <Card className="shadow-lg">
-      <CardHeader>
-        <CardTitle className="text-2xl flex items-center">
-          <Sparkles className="mr-2 h-6 w-6 text-primary" />
-          AI Weekly Summary Generator
-        </CardTitle>
-        <CardDescription>
-          Provide summaries of your weekly activities, and let AI generate a concise report.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+      {showCardHeader && (
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center">
+            <Sparkles className="mr-2 h-6 w-6 text-primary" />
+            AI Weekly Summary Generator
+          </CardTitle>
+          <CardDescription>
+            Provide summaries of your weekly activities, and let AI generate a concise report.
+          </CardDescription>
+        </CardHeader>
+      )}
+      <CardContent className={!showCardHeader ? "pt-6" : ""}> {/* Add padding-top if header is hidden */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField

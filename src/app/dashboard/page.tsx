@@ -1,14 +1,15 @@
+
 import TimelineView from "@/components/dashboard/TimelineView";
 import ManualLogForm from "@/components/dashboard/ManualLogForm";
 import SummaryGenerator from "@/components/dashboard/SummaryGenerator";
 import ExportControls from "@/components/dashboard/ExportControls";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { GanttChartSquare, BookText, FileText, SettingsIcon, LayoutDashboard } from "lucide-react"; // Added LayoutDashboard for Dashboard tab
+import { GanttChartSquare, BookText, FileText, SettingsIcon, LayoutDashboard } from "lucide-react";
 
 export default function DashboardPage() {
   return (
     <div className="container mx-auto py-2 space-y-8">
-      <h1 className="text-3xl font-bold text-foreground">Welcome to CommitChronicle</h1>
+      <h1 className="text-3xl font-bold text-primary">Welcome to CommitChronicle</h1>
       
       <Tabs defaultValue="dashboard" className="w-full">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-5 mb-6">
@@ -34,10 +35,10 @@ export default function DashboardPage() {
             <div className="md:col-span-2">
               <TimelineView />
             </div>
-            <div>
+            <div className="md:col-span-2">
               <ManualLogForm />
             </div>
-            <div>
+            <div className="md:col-span-2">
               <SummaryGenerator />
             </div>
              <div className="md:col-span-2">

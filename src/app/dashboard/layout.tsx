@@ -24,7 +24,7 @@ export default function DashboardLayout({
         <AppHeader />
         <div className="flex flex-1">
           <Sidebar className="border-r" collapsible="icon">
-            <SidebarContent>
+            <SidebarContent className="pt-16 md:pt-0"> {/* Added md:pt-0 to reset padding on desktop where fixed positioning handles it */}
               <ScrollArea className="h-full py-2">
                 <SidebarNav />
               </ScrollArea>

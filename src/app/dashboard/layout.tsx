@@ -1,3 +1,4 @@
+
 import AppHeader from "@/components/layout/AppHeader";
 import { SidebarNav } from "@/components/layout/SidebarNav";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -30,7 +31,7 @@ export default function DashboardLayout({
             </SidebarContent>
           </Sidebar>
           <SidebarInset className="flex-1">
-            <main className="p-4 sm:p-6 lg:p-8 flex-1">
+            <main className="p-7 flex-1">
               {children}
             </main>
           </SidebarInset>

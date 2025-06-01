@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,7 +9,7 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 100%; /* Changed from light blue to white */
+    --background: 210 30% 97%; /* Light cool grey: #f6f7f9 */
     --foreground: 222.2 84% 4.9%; /* Default Dark for text */
 
     --card: 0 0% 100%; /* White cards */
@@ -20,32 +21,32 @@ body {
     --primary: 220 60% 40%; /* Richer Navy/Royal Blue */
     --primary-foreground: 0 0% 98%; /* White/Light Gray for contrast on blue */
 
-    --secondary: 210 40% 96.1%; 
+    --secondary: 210 30% 92%; /* Light grey for secondary elements: #e7ebee */
     --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --muted: 210 40% 96.1%;
+    --muted: 210 30% 94%; /* Slightly lighter grey for muted backgrounds: #eef0f2 */
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 197 92% 85.3%; /* #B3E5FC - Complementary Light Blue */
+    --accent: 197 92% 85.3%; /* #B3E5FC - Complementary Light Blue (for interactive accents) */
     --accent-foreground: 222.2 47.4% 11.2%; /* Darker text on light blue accent */
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 205 50% 88%; /* Adjusted border for light theme */
-    --input: 205 50% 88%; /* Adjusted input for light theme */
+    --border: 210 25% 88%; /* Greyish border: #dcdfe2 */
+    --input: 210 25% 88%; /* Greyish input border */
     --ring: 220 60% 40%; /* Use primary for ring */
 
     --radius: 0.5rem;
 
-    /* Sidebar specific colors based on new theme */
-    --sidebar-background: 0 0% 100%; /* White sidebar - ensure this is what's desired or change to light blue if screenshot is preferred */
+    /* Sidebar specific colors - white sidebar on light grey background */
+    --sidebar-background: 0 0% 100%; 
     --sidebar-foreground: 222.2 84% 4.9%;
     --sidebar-primary: 220 60% 40%; 
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 190 75% 92.2%; /* Use main background as sidebar accent */
+    --sidebar-accent: 210 30% 94%; /* Muted grey for sidebar item hover/active */
     --sidebar-accent-foreground: 222.2 47.4% 11.2%;
-    --sidebar-border: 205 50% 88%;
+    --sidebar-border: 210 25% 88%; /* Match main border */
     --sidebar-ring: 220 60% 40%;
   }
 

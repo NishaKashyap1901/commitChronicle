@@ -26,9 +26,9 @@ export default function RegisterPage() {
           <div className="mx-auto mb-4">
              <BookOpenCheck className="h-16 w-16 text-primary" />
           </div>
-          <CardTitle className="text-3xl font-bold">Create Account</CardTitle>
+          <CardTitle className="text-3xl font-bold">Create CommitChronicle Account</CardTitle>
           <CardDescription className="text-muted-foreground">
-            Join MyDevJournal to track your progress.
+            Join CommitChronicle to track your progress.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

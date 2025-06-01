@@ -26,7 +26,7 @@ export default function LoginPage() {
           <div className="mx-auto mb-4">
             <BookOpenCheck className="h-16 w-16 text-primary" />
           </div>
-          <CardTitle className="text-3xl font-bold">MyDevJournal</CardTitle>
+          <CardTitle className="text-3xl font-bold">CommitChronicle</CardTitle>
           <CardDescription className="text-muted-foreground">
             Sign in to access your personalized dashboard.
           </CardDescription>

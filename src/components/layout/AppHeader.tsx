@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, UserCircle, Settings, LogOut } from "lucide-react";
-import { useSidebar } from "@/components/ui/sidebar"; 
+// import { useSidebar } from "@/components/ui/sidebar"; 
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -40,12 +40,24 @@ export default function AppHeader() {
         </SheetContent>
       </Sheet>
       
-      {/* Desktop: App Name */}
+      {/* Desktop: App Name & New Logo */}
       <div className="flex items-center gap-2">
-         <svg viewBox="0 0 24 24" fill="currentColor" className="h-7 w-7 text-primary">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"></path>
-         </svg>
-        <Link href="/dashboard" className="text-xl font-semibold text-foreground hover:text-primary transition-colors">
+        <Link href="/dashboard" className="flex items-center gap-2 text-xl font-semibold text-foreground hover:text-primary transition-colors">
+          <svg 
+            width="28" 
+            height="28" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            className="h-7 w-7 text-primary"
+          >
+            <path d="M12 2a10 10 0 1 0 10 10H12V2Z" />
+            <path d="M22 12A10 10 0 0 0 12 2v10Z" />
+            <circle cx="12" cy="12" r="3" fill="hsl(var(--primary-foreground))" stroke="hsl(var(--primary))" />
+          </svg>
           CommitChronicle
         </Link>
       </div>
@@ -75,3 +87,4 @@ export default function AppHeader() {
     </header>
   );
 }
+

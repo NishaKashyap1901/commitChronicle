@@ -1,9 +1,12 @@
+
 "use client";
 
+import * as React from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { GitCommit, GitPullRequest, CheckCircle, FileText } from "lucide-react";
+import { GitCommit, GitPullRequest, CheckCircle, FileText, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface TimelineEvent {
   id: number;
@@ -13,68 +16,123 @@ interface TimelineEvent {
   date: string;
   author: string;
   icon: React.ElementType;
-  badge: string;
+  badgeText: string; // Renamed from badge to badgeText to avoid conflict with Badge component
 }
 
 // Mock data - replace with actual data fetching and processing
 const mockTimelineEvents: TimelineEvent[] = [
-  { id: 1, type: "commit", title: "feat: Implement user authentication", details: "Added JWT-based auth for users.", date: "2024-07-28", author: "Alice", icon: GitCommit, badge: "Feature" },
-  { id: 2, type: "pr", title: "fix: Resolve issue #123", details: "Fixed critical bug in payment processing.", date: "2024-07-27", author: "Bob", icon: GitPullRequest, badge: "Bugfix" },
-  { id: 3, type: "jira", title: "Task CC-45: Design new dashboard UI", details: "Status changed from In Progress to In Review.", date: "2024-07-26", author: "Carol", icon: CheckCircle, badge: "Jira Update" },
-  { id: 4, type: "log", title: "Manual Log: Researched alternative CI/CD pipelines", details: "Spent 2 hours exploring GitHub Actions vs Jenkins.", date: "2024-07-25", author: "Dave", icon: FileText, badge: "Manual Log" },
-  { id: 5, type: "commit", title: "docs: Update README with setup instructions", details: "Clarified environment variable setup.", date: "2024-07-24", author: "Alice", icon: GitCommit, badge: "Docs" },
+  { id: 1, type: "commit", title: "feat: Implement user authentication", details: "Added JWT-based auth for users.", date: "2024-07-28", author: "Alice", icon: GitCommit, badgeText: "Feature" },
+  { id: 2, type: "pr", title: "fix: Resolve issue #123", details: "Fixed critical bug in payment processing.", date: "2024-07-27", author: "Bob", icon: GitPullRequest, badgeText: "Bugfix" },
+  { id: 3, type: "jira", title: "Task CC-45: Design new dashboard UI", details: "Status changed from In Progress to In Review.", date: "2024-07-26", author: "Carol", icon: CheckCircle, badgeText: "Jira Update" },
+  { id: 4, type: "log", title: "Manual Log: Researched CI/CD", details: "Explored GitHub Actions vs Jenkins.", date: "2024-07-25", author: "Dave", icon: FileText, badgeText: "Manual Log" },
+  { id: 5, type: "commit", title: "docs: Update README", details: "Clarified env setup.", date: "2024-07-24", author: "Alice", icon: GitCommit, badgeText: "Docs" },
+  { id: 6, type: "jira", title: "Task CC-48: API endpoint for users", details: "Status changed to In Progress.", date: "2024-07-23", author: "Eve", icon: CheckCircle, badgeText: "Jira Update" },
+  { id: 7, type: "pr", title: "refactor: Optimize database queries", details: "Improved performance of user lookup.", date: "2024-07-22", author: "Frank", icon: GitPullRequest, badgeText: "Refactor" },
+  { id: 8, type: "commit", title: "feat: Add dark mode toggle", details: "Implemented theme switching.", date: "2024-07-21", author: "Grace", icon: GitCommit, badgeText: "Feature" },
+  { id: 9, type: "log", title: "Manual Log: Team meeting notes", details: "Discussed Q3 roadmap.", date: "2024-07-20", author: "Hank", icon: FileText, badgeText: "Meeting" },
+  { id: 10, type: "commit", title: "fix: Correct typo in login page", details: "Small textual fix.", date: "2024-07-19", author: "Alice", icon: GitCommit, badgeText: "Fix" },
 ];
 
-const getIconClassName = (type: TimelineEvent["type"]): string => {
+const ITEMS_PER_PAGE = 5;
+
+const getIconElement = (IconComponent: React.ElementType, type: TimelineEvent["type"]): JSX.Element => {
+  let iconClassName = "h-5 w-5";
   switch (type) {
     case "commit":
-      return "text-primary";
+      iconClassName += " text-primary";
+      break;
     case "pr":
-      return "text-foreground"; // Using a neutral theme color
+      iconClassName += " text-foreground"; 
+      break;
     case "jira":
-      return "text-accent-foreground"; // Using a theme color that contrasts with accent
+      iconClassName += " text-accent-foreground"; 
+      break;
     case "log":
-      return "text-muted-foreground";
+      iconClassName += " text-muted-foreground";
+      break;
     default:
-      return "text-primary";
+      iconClassName += " text-primary";
   }
+  return <IconComponent className={iconClassName} />;
 };
 
 export default function TimelineView() {
+  const [currentPage, setCurrentPage] = React.useState(1);
+
+  const totalPages = Math.ceil(mockTimelineEvents.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentEvents = mockTimelineEvents.slice(startIndex, endIndex);
+
+  const handlePreviousPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  };
+
   return (
     <Card className="shadow-lg">
       <CardHeader>
         <CardTitle className="text-2xl">Activity Timeline</CardTitle>
-        <CardDescription>Recent commits, pull requests, Jira updates, and manual logs.</CardDescription>
+        <CardDescription>Recent commits, pull requests, Jira updates, and manual logs. (Connect filters for dynamic data)</CardDescription>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[400px] pr-4">
-          <div className="relative space-y-6 pl-6 before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-border">
-            {mockTimelineEvents.map((event) => {
-              const Icon = event.icon;
-              const iconClassName = getIconClassName(event.type);
-              return (
-                <div key={event.id} className="relative flex items-start">
-                  <div className="absolute -left-[calc(0.75rem-1px)] top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-background border-2 border-primary">
-                    <Icon className={`h-3.5 w-3.5 ${iconClassName}`} />
-                  </div>
-                  <div className="ml-6 flex-1 rounded-md border p-4 shadow-sm bg-card hover:shadow-md transition-shadow">
-                    <div className="flex items-center justify-between">
-                      <h4 className="font-semibold text-foreground">{event.title}</h4>
-                      <Badge variant="outline">{event.badge}</Badge>
-                    </div>
-                    <p className="mt-1 text-sm text-muted-foreground">{event.details}</p>
-                    <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
-                      <span>By {event.author}</span>
-                      <span>{event.date}</span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </ScrollArea>
+        <div className="min-h-[320px]"> {/* Set a min-height to prevent layout shift during pagination */}
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[50px]">Type</TableHead>
+                <TableHead>Title & Details</TableHead>
+                <TableHead className="w-[120px]">Author</TableHead>
+                <TableHead className="w-[120px]">Date</TableHead>
+                <TableHead className="w-[120px] text-right">Category</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {currentEvents.map((event) => (
+                <TableRow key={event.id}>
+                  <TableCell>{getIconElement(event.icon, event.type)}</TableCell>
+                  <TableCell>
+                    <div className="font-medium">{event.title}</div>
+                    <div className="text-sm text-muted-foreground">{event.details}</div>
+                  </TableCell>
+                  <TableCell>{event.author}</TableCell>
+                  <TableCell>{event.date}</TableCell>
+                  <TableCell className="text-right">
+                    <Badge variant="outline">{event.badgeText}</Badge>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handlePreviousPage}
+            disabled={currentPage === 1}
+          >
+            <ChevronLeft className="mr-2 h-4 w-4" />
+            Previous
+          </Button>
+          <span className="text-sm text-muted-foreground">
+            Page {currentPage} of {totalPages}
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+          >
+            Next
+            <ChevronRight className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );
 }
+

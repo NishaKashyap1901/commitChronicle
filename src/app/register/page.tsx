@@ -5,18 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { BookOpenCheck, LogIn } from "lucide-react";
+import { BookOpenCheck, UserPlus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const router = useRouter();
 
-  const handleLogin = () => {
-    // In a real app, this would involve API calls for authentication
-    console.log("Attempting to login with email/password");
-    // For now, simulate successful login and redirect to dashboard
-    router.push("/dashboard");
+  const handleRegister = () => {
+    // In a real app, this would involve API calls for registration
+    console.log("Attempting to register user");
+    // For now, simulate successful registration and redirect to login or dashboard
+    router.push("/login"); 
   };
 
   return (
@@ -24,14 +24,18 @@ export default function LoginPage() {
       <Card className="w-full max-w-md shadow-2xl">
         <CardHeader className="text-center">
           <div className="mx-auto mb-4">
-            <BookOpenCheck className="h-16 w-16 text-primary" />
+             <BookOpenCheck className="h-16 w-16 text-primary" />
           </div>
-          <CardTitle className="text-3xl font-bold">MyDevJournal</CardTitle>
+          <CardTitle className="text-3xl font-bold">Create Account</CardTitle>
           <CardDescription className="text-muted-foreground">
-            Sign in to access your personalized dashboard.
+            Join MyDevJournal to track your progress.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">Full Name</Label>
+            <Input id="name" type="text" placeholder="Your Name" />
+          </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input id="email" type="email" placeholder="user@example.com" />
@@ -40,21 +44,22 @@ export default function LoginPage() {
             <Label htmlFor="password">Password</Label>
             <Input id="password" type="password" placeholder="••••••••" />
           </div>
+           <div className="space-y-2">
+            <Label htmlFor="confirm-password">Confirm Password</Label>
+            <Input id="confirm-password" type="password" placeholder="••••••••" />
+          </div>
           <Button
             className="w-full text-lg py-6 shadow-sm hover:shadow-md transition-shadow"
-            onClick={handleLogin}
+            onClick={handleRegister}
           >
-            <LogIn className="mr-2 h-5 w-5" />
-            Sign In
+            <UserPlus className="mr-2 h-5 w-5" />
+            Register
           </Button>
         </CardContent>
         <CardFooter className="flex flex-col items-center space-y-2">
-          <Link href="/register" className="text-sm text-primary hover:underline">
-            Don't have an account? Register
+          <Link href="/login" className="text-sm text-primary hover:underline">
+            Already have an account? Sign In
           </Link>
-          <p className="text-xs text-muted-foreground">
-            Your secure portal to development insights.
-          </p>
         </CardFooter>
       </Card>
     </div>

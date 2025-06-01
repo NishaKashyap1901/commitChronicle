@@ -1,9 +1,10 @@
+
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Home, GanttChartSquare, FileText, Settings, BookText } from "lucide-react";
+import { Home, GanttChartSquare, FileText, Settings, BookText, Download } from "lucide-react";
 import {
   SidebarMenu,
   SidebarMenuItem,
@@ -22,6 +23,7 @@ const navItems: NavItem[] = [
   { href: "/dashboard/timeline", label: "Timeline", icon: GanttChartSquare, matchSegments: 2 },
   { href: "/dashboard/manual-log", label: "Manual Log", icon: BookText, matchSegments: 2 },
   { href: "/dashboard/summaries", label: "Summaries", icon: FileText, matchSegments: 2 },
+  { href: "/dashboard/export", label: "Export", icon: Download, matchSegments: 2 },
   { href: "/dashboard/settings", label: "Settings", icon: Settings, matchSegments: 2 },
 ];
 

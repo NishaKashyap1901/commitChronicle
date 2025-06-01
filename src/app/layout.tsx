@@ -1,3 +1,4 @@
+
 import type {Metadata} from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
@@ -14,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'CommitChronicle',
-  description: 'Track your commits, tasks, and generate weekly summaries.',
+  title: 'MyDevJournal',
+  description: 'Your personal development journal and productivity tracker.',
 };
 
 export default function RootLayout({

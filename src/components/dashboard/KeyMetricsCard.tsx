@@ -6,12 +6,13 @@ import { BarChart3, GitCommit, ListChecks, CheckSquare, Clock, AlertTriangle } f
 
 export default function KeyMetricsCard() {
   // Data would be fetched based on user ID and date range (last 6 months)
-  const commitsLast6Months = 750; // Placeholder
-  const tasksCompletedLast6Months = 180; // Placeholder
-  const activePRs = 8; // Placeholder
-  const jiraToDo = 15; // Placeholder
-  const jiraInProgress = 7; // Placeholder
-  const jiraDoneLast6Months = 120; // Placeholder
+  // Initialize with 0 or appropriate empty state values
+  const commitsLast6Months = 0; 
+  const tasksCompletedLast6Months = 0; 
+  const activePRs = 0; 
+  const jiraToDo = 0; 
+  const jiraInProgress = 0; 
+  const jiraDoneLast6Months = 0; 
 
   return (
     <Card className="shadow-lg">

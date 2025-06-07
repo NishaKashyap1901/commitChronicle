@@ -19,16 +19,8 @@ import {
 } from "@/components/ui/chart"
 import { BarChart3Icon } from "lucide-react";
 
-// Mock data - replace with actual data fetching and processing based on filters
-const chartData = [
-  { date: "2024-07-22", commits: 5, tasks: 3 },
-  { date: "2024-07-23", commits: 8, tasks: 5 },
-  { date: "2024-07-24", commits: 3, tasks: 2 },
-  { date: "2024-07-25", commits: 10, tasks: 7 },
-  { date: "2024-07-26", commits: 7, tasks: 4 },
-  { date: "2024-07-27", commits: 4, tasks: 6 },
-  { date: "2024-07-28", commits: 6, tasks: 3 },
-];
+// Initialize with empty data, to be populated by actual data fetching
+const chartData: { date: string; commits: number; tasks: number }[] = [];
 
 const chartConfig = {
   commits: {
@@ -50,7 +42,7 @@ export default function ActivityChart() {
           <BarChart3Icon className="mr-2 h-5 w-5 text-primary" />
           Activity Overview
         </CardTitle>
-        <CardDescription>Overview of commits and tasks completed. (Data is currently static)</CardDescription>
+        <CardDescription>Overview of commits and tasks completed. Awaiting real data.</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="min-h-[300px] w-full">

@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -92,7 +93,7 @@ export default function SettingsPage() {
             <Trash2 className="mr-2 h-4 w-4" /> Delete Account
           </Button>
           <p className="text-xs text-muted-foreground mt-2">
-            This will permanently delete all your data associated with CommitChronicle.
+            This will permanently delete all your data associated with Commit Chronicle.
           </p>
         </CardContent>
       </Card>

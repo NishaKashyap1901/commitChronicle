@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'CommitChronicle',
+  title: 'Commit Chronicle',
   description: 'Your personal development journal and productivity tracker.',
 };
 

@@ -10,7 +10,7 @@ export default function HomePage() {
         <header className="mb-10">
           <BookOpenCheck className="h-20 w-20 sm:h-24 sm:w-24 mx-auto mb-6 text-primary" />
           <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-foreground">
-            Welcome to CommitChronicle
+            Welcome to Commit Chronicle
           </h1>
           <p className="text-lg sm:text-xl text-muted-foreground">
             Your personal development journal and productivity tracker. Streamline your workflow and gain insights into your development journey.

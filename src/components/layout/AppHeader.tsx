@@ -58,7 +58,7 @@ export default function AppHeader() {
             <path d="M22 12A10 10 0 0 0 12 2v10Z" fill="hsl(var(--accent))" />
             <circle cx="12" cy="12" r="3" fill="hsl(var(--primary-foreground))" stroke="hsl(var(--primary))" />
           </svg>
-          CommitChronicle
+          Commit Chronicle
         </Link>
       </div>
 

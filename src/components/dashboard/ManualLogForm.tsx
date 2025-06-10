@@ -23,7 +23,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { CalendarIcon, BookPlus } from "lucide-react";
+import { CalendarIcon, BookPlus, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const manualLogFormSchema = z.object({
@@ -44,14 +44,40 @@ const manualLogFormSchema = z.object({
 type ManualLogFormValues = z.infer<typeof manualLogFormSchema>;
 
 const defaultValues: Partial<ManualLogFormValues> = {
-  // date: new Date(), // Problematic for hydration: server and client `new Date()` can differ.
   type: "task",
-  entry: "", // Initialize all fields for consistency
+  entry: "", 
   relatedTicket: "",
 };
 
+// Placeholder for a backend submission function
+// In a real app, this would be a Server Action or an API call.
+async function saveLogToCloud(data: ManualLogFormValues): Promise<{ success: boolean; message: string }> {
+  console.log("Attempting to save log to cloud:", data);
+  // Simulate API call delay
+  await new Promise(resolve => setTimeout(resolve, 1500));
+
+  // Simulate a successful response
+  // In a real scenario, you would make an HTTP request to your backend (e.g., a Cloud Function or Next.js API route)
+  // which would then save the data to Firestore or another database on Google Cloud.
+  // For example:
+  // const response = await fetch('/api/log-entry', {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json' },
+  //   body: JSON.stringify(data),
+  // });
+  // if (!response.ok) {
+  //   return { success: false, message: "Failed to save log." };
+  // }
+  // return { success: true, message: "Log saved successfully!" };
+  
+  // For now, always return success for demo purposes
+  return { success: true, message: "Log entry submitted to cloud (simulated)." };
+}
+
+
 export default function ManualLogForm() {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
   const form = useForm<ManualLogFormValues>({
     resolver: zodResolver(manualLogFormSchema),
     defaultValues,
@@ -59,35 +85,49 @@ export default function ManualLogForm() {
   });
 
   React.useEffect(() => {
-    // Set the date only on the client, after initial mount, if it's not already set.
-    // This avoids hydration mismatch for the default new Date().
     if (!form.getValues("date")) {
       form.setValue("date", new Date(), {
         shouldDirty: false, 
-        shouldValidate: false, // Avoid immediate validation if not desired
+        shouldValidate: false, 
       });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Run only once on mount
+  }, []); 
 
-  function onSubmit(data: ManualLogFormValues) {
-    console.log(data);
-    toast({
-      title: "Log Submitted",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
-    // Reset to defaultValues which now includes an undefined date,
-    // useEffect will then repopulate it client-side for the next entry.
-    form.reset(defaultValues); 
-    // Explicitly set date again after reset using useEffect logic
-    form.setValue("date", new Date(), {
-        shouldDirty: false, 
-        shouldValidate: false,
-    });
+  async function onSubmit(data: ManualLogFormValues) {
+    setIsSubmitting(true);
+    try {
+      // Here you would call your actual backend function
+      // const result = await saveLogToYourBackend(data, userId); // userId would come from auth
+      const result = await saveLogToCloud(data);
+
+      if (result.success) {
+        toast({
+          title: "Log Submitted!",
+          description: result.message,
+        });
+        form.reset(defaultValues); 
+        form.setValue("date", new Date(), { // Reset date for next entry
+            shouldDirty: false, 
+            shouldValidate: false,
+        });
+      } else {
+        toast({
+          title: "Submission Failed",
+          description: result.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error submitting log:", error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -202,7 +242,14 @@ export default function ManualLogForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full md:w-auto">Add Log Entry</Button>
+            <Button type="submit" className="w-full md:w-auto" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <BookPlus className="mr-2 h-4 w-4" />
+              )}
+              Add Log Entry
+            </Button>
           </form>
         </Form>
       </CardContent>

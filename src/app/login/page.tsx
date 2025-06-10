@@ -8,15 +8,26 @@ import { Label } from "@/components/ui/label";
 import { BookOpenCheck, LogIn } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import React from "react";
 
 export default function LoginPage() {
   const router = useRouter();
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
   const handleLogin = () => {
-    // In a real app, this would involve API calls for authentication
-    console.log("Attempting to login with email/password");
-    // For now, simulate successful login and redirect to dashboard
-    router.push("/dashboard");
+    // In a real app, this would involve API calls to Firebase Auth or your auth provider.
+    // For now, we'll simulate a successful login and redirect.
+    console.log("Attempting to login with:", { email, password });
+    // Example: if (email === "nisha.kashyap@innogent.in" && password === "password")
+    // For demonstration, any non-empty email/password will redirect.
+    if (email && password) {
+      // You might store some user info in localStorage or context upon successful real login
+      // localStorage.setItem('user', JSON.stringify({ email: email }));
+      router.push("/dashboard");
+    } else {
+      alert("Please enter email and password.");
+    }
   };
 
   return (
@@ -34,11 +45,23 @@ export default function LoginPage() {
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="user@example.com" />
+            <Input 
+              id="email" 
+              type="email" 
+              placeholder="user@example.com" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" placeholder="••••••••" />
+            <Input 
+              id="password" 
+              type="password" 
+              placeholder="••••••••" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
           <Button
             className="w-full text-lg py-6 shadow-sm hover:shadow-md transition-shadow"

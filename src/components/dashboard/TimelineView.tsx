@@ -6,9 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { 
-  GitCommit, GitPullRequest, CheckCircle, FileText, Users, Workflow, Award, BookOpen, AlertTriangle, Info, ChevronLeft, ChevronRight, Link as LinkIcon 
-} from "lucide-react"; 
+import {
+  GitCommit, GitPullRequest, CheckCircle, FileText, Users, Workflow, Award, BookOpen, AlertTriangle, Info, ChevronLeft, ChevronRight, Link as LinkIcon
+} from "lucide-react";
 import { format, subDays } from "date-fns";
 import Link from 'next/link';
 
@@ -41,74 +41,74 @@ export interface TimelineEvent {
 }
 
 const ITEMS_PER_PAGE = 5;
+const today = new Date();
 
 const getDefaultSampleEvents = (): TimelineEvent[] => [
-  { 
-    id: 1, 
-    type: "git_activity", 
-    title: "feat: Implement user authentication module", 
-    details: "Added new endpoints and UI for login/registration.", 
-    date: format(subDays(today, 1), "MMM dd, yyyy"), 
-    author: "Nisha Kashyap", 
-    iconName: "GitCommit", 
+  {
+    id: 1,
+    type: "git_activity",
+    title: "feat: Implement user authentication module",
+    details: "Added new endpoints and UI for login/registration.",
+    date: format(subDays(today, 1), "MMM dd, yyyy"),
+    author: "Nisha Kashyap",
+    iconName: "GitCommit",
     badgeText: "Git",
     relatedLink: "https://github.com/example/commit/abc123xyz"
   },
-  { 
-    id: 2, 
-    type: "git_activity", 
-    title: "Refactor: Dashboard widget components", 
-    details: "PR #42 - Improved performance and code structure.", 
-    date: format(subDays(today, 2), "MMM dd, yyyy"), 
-    author: "Nisha Kashyap", 
-    iconName: "GitPullRequest", 
+  {
+    id: 2,
+    type: "git_activity",
+    title: "Refactor: Dashboard widget components",
+    details: "PR #42 - Improved performance and code structure.",
+    date: format(subDays(today, 2), "MMM dd, yyyy"),
+    author: "Nisha Kashyap",
+    iconName: "GitPullRequest",
     badgeText: "Git PR",
     relatedLink: "https://github.com/example/pull/42"
   },
-  { 
-    id: 3, 
-    type: "jira_activity", 
-    title: "BUG-123: Fix login button responsiveness", 
-    details: "Status changed from In Progress to Done.", 
-    date: format(subDays(today, 2), "MMM dd, yyyy"), 
-    author: "Nisha Kashyap", 
+  {
+    id: 3,
+    type: "jira_activity",
+    title: "BUG-123: Fix login button responsiveness",
+    details: "Status changed from In Progress to Done.",
+    date: format(subDays(today, 2), "MMM dd, yyyy"),
+    author: "Nisha Kashyap",
     iconName: "Workflow",
-    badgeText: "Jira Update" ,
+    badgeText: "Jira Update",
     relatedLink: "https://jira.example.com/browse/BUG-123"
   },
-  { 
-    id: 4, 
-    type: "meeting_notes", 
-    title: "Client meeting and feature planning session", 
-    details: "Discussed Q3 roadmap and new feature requests.", 
-    date: format(subDays(today, 3), "MMM dd, yyyy"), 
-    author: "Nisha Kashyap", 
-    iconName: "Users", 
-    badgeText: "Meeting" 
+  {
+    id: 4,
+    type: "meeting_notes",
+    title: "Client meeting and feature planning session",
+    details: "Discussed Q3 roadmap and new feature requests.",
+    date: format(subDays(today, 3), "MMM dd, yyyy"),
+    author: "Nisha Kashyap",
+    iconName: "Users",
+    badgeText: "Meeting"
   },
-  { 
-    id: 5, 
-    type: "documentation_update", 
-    title: "docs: Update API documentation for v1.2", 
-    details: "Added examples for new /summary endpoint.", 
-    date: format(subDays(today, 4), "MMM dd, yyyy"), 
-    author: "Nisha Kashyap", 
-    iconName: "FileText", 
-    badgeText: "Docs" 
+  {
+    id: 5,
+    type: "documentation_update",
+    title: "docs: Update API documentation for v1.2",
+    details: "Added examples for new /summary endpoint.",
+    date: format(subDays(today, 4), "MMM dd, yyyy"),
+    author: "Nisha Kashyap",
+    iconName: "FileText",
+    badgeText: "Docs"
   },
-   { 
-    id: 6, 
-    type: "task_completed", 
-    title: "Onboard new team member", 
-    details: "Completed onboarding checklist for Alex.", 
-    date: format(subDays(today, 5), "MMM dd, yyyy"), 
-    author: "Nisha Kashyap", 
-    iconName: "CheckCircle", 
-    badgeText: "Task Done" 
+   {
+    id: 6,
+    type: "task_completed",
+    title: "Onboard new team member",
+    details: "Completed onboarding checklist for Alex.",
+    date: format(subDays(today, 5), "MMM dd, yyyy"),
+    author: "Nisha Kashyap",
+    iconName: "CheckCircle",
+    badgeText: "Task Done"
   },
 ];
 
-const today = new Date(); // Define today here so it's accessible by getDefaultSampleEvents
 
 const getIconElement = (iconName: string, type: TimelineEvent["type"]): JSX.Element => {
   const IconComponent = iconComponents[iconName] || BookOpen; // Default to BookOpen if iconName is not found
@@ -119,7 +119,7 @@ const getIconElement = (iconName: string, type: TimelineEvent["type"]): JSX.Elem
       iconClassName += " text-primary";
       break;
     case "pr":
-      iconClassName += " text-foreground"; 
+      iconClassName += " text-foreground";
       break;
     case "jira_activity":
       iconClassName += " text-blue-500"; // Specific color for Jira
@@ -161,8 +161,10 @@ const getBadgeVariant = (type: TimelineEvent['type'], badgeText: string): "defau
 export default function TimelineView() {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [allEvents, setAllEvents] = React.useState<TimelineEvent[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
+    setIsLoading(true);
     const storedEventsString = localStorage.getItem('commitChronicleTimelineEvents');
     let loadedEvents: TimelineEvent[] = [];
     if (storedEventsString) {
@@ -170,20 +172,22 @@ export default function TimelineView() {
         loadedEvents = JSON.parse(storedEventsString);
       } catch (e) {
         console.error("Failed to parse timeline events from localStorage", e);
-        // Fallback to default if parsing fails
         loadedEvents = getDefaultSampleEvents();
         localStorage.setItem('commitChronicleTimelineEvents', JSON.stringify(loadedEvents));
       }
     } else {
-      // If nothing in localStorage, initialize with default sample data
       loadedEvents = getDefaultSampleEvents();
       localStorage.setItem('commitChronicleTimelineEvents', JSON.stringify(loadedEvents));
     }
+    // Ensure events are sorted by date (newest first) if IDs are timestamps
+    // Or rely on unshift in ManualLogForm to keep newest first
+    loadedEvents.sort((a, b) => b.id - a.id);
     setAllEvents(loadedEvents);
+    setIsLoading(false);
   }, []);
 
 
-  const totalPages = Math.max(1, Math.ceil(allEvents.length / ITEMS_PER_PAGE)); 
+  const totalPages = Math.max(1, Math.ceil(allEvents.length / ITEMS_PER_PAGE));
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentEvents = allEvents.slice(startIndex, endIndex);
@@ -195,27 +199,22 @@ export default function TimelineView() {
   const handleNextPage = () => {
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
   };
-  
+
   const handleConnectPrompt = () => {
-    // Placeholder for navigation or modal to guide user to connect accounts
     alert("Please connect your Git/Jira accounts in Settings to see real activity.");
   };
 
 
-  if (!allEvents.length) { // This check might be redundant if we always populate with default or from localStorage
-    return (
+  if (isLoading) {
+     return (
       <Card className="shadow-lg">
         <CardHeader>
           <CardTitle className="text-2xl">Activity Timeline</CardTitle>
-          <CardDescription>Chronological view of your development activities.</CardDescription>
+          <CardDescription>Chronological view of your development activities. Add manual logs or connect accounts in settings.</CardDescription>
         </CardHeader>
         <CardContent className="text-center py-10">
-            <Info className="mx-auto h-12 w-12 text-muted-foreground" />
-            <h3 className="mt-4 text-lg font-medium">No Activity Yet</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Connect your Git and Jira accounts in settings, or add manual logs to populate your timeline.
-            </p>
-            <Button onClick={handleConnectPrompt} className="mt-4">Go to Settings</Button>
+            <Info className="mx-auto h-12 w-12 text-muted-foreground animate-pulse" />
+            <h3 className="mt-4 text-lg font-medium">Loading timeline...</h3>
         </CardContent>
       </Card>
     );
@@ -229,55 +228,68 @@ export default function TimelineView() {
         <CardDescription>Chronological view of your development activities. Add manual logs or connect accounts in settings.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="min-h-[320px]">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[50px]">Type</TableHead>
-                <TableHead>Title & Details</TableHead>
-                <TableHead className="w-[120px]">Author</TableHead>
-                <TableHead className="w-[120px]">Date</TableHead>
-                <TableHead className="w-[120px] text-right">Category</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {currentEvents.length > 0 ? (
-                currentEvents.map((event) => (
-                  <TableRow key={event.id}>
-                    <TableCell>{getIconElement(event.iconName, event.type)}</TableCell>
-                    <TableCell>
-                      <div className="font-medium flex items-center">
-                        {event.title}
-                        {event.relatedLink && (
-                          <Link href={event.relatedLink} target="_blank" rel="noopener noreferrer" className="ml-2">
-                            <LinkIcon className="h-4 w-4 text-primary hover:text-primary/80" />
-                          </Link>
-                        )}
-                      </div>
-                      <div className="text-sm text-muted-foreground">{event.details}</div>
-                    </TableCell>
-                    <TableCell>{event.author}</TableCell>
-                    <TableCell>{event.date}</TableCell>
-                    <TableCell className="text-right">
-                      <Badge variant={getBadgeVariant(event.type, event.badgeText)}>
-                        {event.badgeText}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
+        <div className="min-h-[320px]"> {/* Ensure a minimum height for the table area */}
+          {allEvents.length === 0 && !isLoading ? (
+             <div className="text-center py-10">
+                <Info className="mx-auto h-12 w-12 text-muted-foreground" />
+                <h3 className="mt-4 text-lg font-medium">No Activity Yet</h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Add some manual logs or connect your Git/Jira accounts in settings to populate your timeline.
+                </p>
+                <Button onClick={() => router.push('/dashboard/settings')} className="mt-4">Go to Settings</Button>
+            </div>
+          ) : (
+            <Table>
+              <TableHeader>
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center py-10">
-                    <div className="flex flex-col items-center gap-2 text-muted-foreground">
-                      <Info className="h-10 w-10" />
-                      <p className="text-lg">No activity to display for this page.</p>
-                      <p className="text-sm">Try adding some manual logs or check other pages.</p>
-                    </div>
-                  </TableCell>
+                  <TableHead className="w-[50px]">Type</TableHead>
+                  <TableHead>Title & Details</TableHead>
+                  <TableHead className="w-[120px]">Author</TableHead>
+                  <TableHead className="w-[120px]">Date</TableHead>
+                  <TableHead className="w-[120px] text-right">Category</TableHead>
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {currentEvents.length > 0 ? (
+                  currentEvents.map((event) => (
+                    <TableRow key={event.id}>
+                      <TableCell>{getIconElement(event.iconName, event.type)}</TableCell>
+                      <TableCell>
+                        <div className="font-medium flex items-center">
+                          {event.title}
+                          {event.relatedLink && (
+                            <Link href={event.relatedLink} target="_blank" rel="noopener noreferrer" className="ml-2">
+                              <LinkIcon className="h-4 w-4 text-primary hover:text-primary/80" />
+                            </Link>
+                          )}
+                        </div>
+                        <div className="text-sm text-muted-foreground">{event.details}</div>
+                      </TableCell>
+                      <TableCell>{event.author}</TableCell>
+                      <TableCell>{event.date}</TableCell>
+                      <TableCell className="text-right">
+                        <Badge variant={getBadgeVariant(event.type, event.badgeText)}>
+                          {event.badgeText}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                   !isLoading && ( // Only show "No activity for this page" if not loading and currentEvents is empty but allEvents might not be
+                    <TableRow>
+                        <TableCell colSpan={5} className="text-center py-10">
+                        <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                            <Info className="h-10 w-10" />
+                            <p className="text-lg">No activity to display for this page.</p>
+                            { allEvents.length > 0 && <p className="text-sm">Try other pages or adjust filters.</p> }
+                        </div>
+                        </TableCell>
+                    </TableRow>
+                   )
+                )}
+              </TableBody>
+            </Table>
+          )}
         </div>
         {allEvents.length > ITEMS_PER_PAGE && (
           <div className="flex items-center justify-end space-x-2 py-4">

@@ -16,16 +16,20 @@ export default function LoginPage() {
   const [password, setPassword] = React.useState("");
 
   const handleLogin = () => {
-    // In a real app, this would involve API calls to Firebase Auth or your auth provider.
-    // For now, we'll simulate a successful login and redirect.
-    console.log("Attempting to login with:", { email, password });
-    // Example: if (email === "nisha.kashyap@innogent.in" && password === "password")
-    // For demonstration, any non-empty email/password will redirect.
-    if (email && password) {
-      // You might store some user info in localStorage or context upon successful real login
-      // localStorage.setItem('user', JSON.stringify({ email: email }));
+    // Simulate login for nisha.kashyap@innogent.in
+    if (email === "nisha.kashyap@innogent.in" && password === "Nisha@2245") {
+      // In a real app, you would set some auth state (e.g., context, token in localStorage)
+      // For now, we just redirect.
+      console.log("Nisha Kashyap logged in (simulated)");
       router.push("/dashboard");
-    } else {
+    } else if (email && password) {
+      // Generic login attempt for demonstration if not Nisha
+      // This part can be removed if only Nisha's login is to be simulated
+      console.log("Attempting to login with (generic):", { email, password });
+      // router.push("/dashboard"); // Or show error for non-Nisha credentials
+      alert("Invalid credentials. Only Nisha's simulated login is configured.");
+    }
+     else {
       alert("Please enter email and password.");
     }
   };
@@ -45,20 +49,20 @@ export default function LoginPage() {
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input 
-              id="email" 
-              type="email" 
-              placeholder="user@example.com" 
+            <Input
+              id="email"
+              type="email"
+              placeholder="user@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input 
-              id="password" 
-              type="password" 
-              placeholder="••••••••" 
+            <Input
+              id="password"
+              type="password"
+              placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />

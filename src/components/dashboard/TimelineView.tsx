@@ -108,6 +108,47 @@ const getDefaultSampleEvents = (): TimelineEvent[] => [
     iconName: "CheckCircle",
     badgeText: "Task Done"
   },
+  {
+    id: 7,
+    type: "general_log",
+    title: "Research: Explored new charting libraries",
+    details: "Evaluated Recharts, Nivo, and Chart.js for dashboard integration.",
+    date: format(subDays(today, 6), "MMM dd, yyyy"),
+    author: "Nisha Kashyap",
+    iconName: "BookOpen",
+    badgeText: "Log"
+  },
+  {
+    id: 8,
+    type: "milestone_achieved",
+    title: "Project Alpha: Phase 1 Complete",
+    details: "All core features for phase 1 deployed successfully to staging.",
+    date: format(subDays(today, 7), "MMM dd, yyyy"),
+    author: "Nisha Kashyap",
+    iconName: "Award",
+    badgeText: "Milestone"
+  },
+  {
+    id: 9,
+    type: "blocker_encountered",
+    title: "API Rate Limiting Issue",
+    details: "Third-party API for data sync is hitting rate limits, impacting real-time updates.",
+    date: format(subDays(today, 8), "MMM dd, yyyy"),
+    author: "Nisha Kashyap",
+    iconName: "AlertTriangle",
+    badgeText: "Blocker"
+  },
+  {
+    id: 10,
+    type: "jira_activity",
+    title: "TASK-789: Prepare Q4 Presentation",
+    details: "Moved from To Do to In Progress. Started drafting slides.",
+    date: format(subDays(today, 9), "MMM dd, yyyy"),
+    author: "Nisha Kashyap",
+    iconName: "Workflow",
+    badgeText: "Jira Update",
+    relatedLink: "https://jira.example.com/browse/TASK-789"
+  }
 ];
 
 
@@ -183,7 +224,7 @@ export default function TimelineView() {
     }
     // Ensure events are sorted by date (newest first) if IDs are timestamps
     // Or rely on unshift in ManualLogForm to keep newest first
-    loadedEvents.sort((a, b) => b.id - a.id);
+    loadedEvents.sort((a, b) => b.id - a.id); // Assuming higher ID means newer
     setAllEvents(loadedEvents);
     setIsLoading(false);
   }, []);
@@ -322,3 +363,5 @@ export default function TimelineView() {
     </Card>
   );
 }
+
+    

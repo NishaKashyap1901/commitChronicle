@@ -51,7 +51,7 @@ export default function ActivityChart() {
           <BarChart3Icon className="mr-2 h-5 w-5 text-primary" />
           Activity Overview (Last 7 Days)
         </CardTitle>
-        <CardDescription>Overview of commits and tasks completed for the selected period.</CardDescription>
+        <CardDescription>Overview of commits and tasks completed for the selected period. Connect accounts in settings for real data.</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
@@ -83,3 +83,5 @@ export default function ActivityChart() {
     </Card>
   )
 }
+
+    

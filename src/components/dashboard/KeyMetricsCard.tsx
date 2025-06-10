@@ -12,7 +12,6 @@ export default function KeyMetricsCard() {
   const router = useRouter();
   // Static sample data, notionally for nisha.kashyap@innogent.in
   const commitsLast6Months = 125;
-  // tasksCompletedLast6Months will be dynamically loaded from localStorage
   const activePRs = 3;
   const jiraToDo = 5;
   const jiraInProgress = 2;
@@ -20,7 +19,7 @@ export default function KeyMetricsCard() {
 
   const [tasksCompleted, setTasksCompleted] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [hasConnectedAccounts, setHasConnectedAccounts] = useState(false); // Default to false, update based on actual integration status
+  const [hasConnectedAccounts, setHasConnectedAccounts] = useState(false); 
 
   useEffect(() => {
     setIsLoading(true);
@@ -37,11 +36,22 @@ export default function KeyMetricsCard() {
     } else {
       setTasksCompleted(0);
     }
-    // In a real app, this would check actual integration status (e.g., from context/API)
-    // For now, we simulate it. If you implement integration connections, update this logic.
+    
+    // Simulate checking if accounts are connected. 
+    // In a real app, this would be based on actual integration status.
+    // For demo purposes, let's assume if a user is logged in, we might want to show Nisha's data by default.
+    // For a more robust demo, one might set these in localStorage upon "connecting" in settings.
     const githubConnected = localStorage.getItem('githubConnected') === 'true';
     const jiraConnected = localStorage.getItem('jiraConnected') === 'true';
-    setHasConnectedAccounts(githubConnected || jiraConnected);
+    
+    // If we're simulating Nisha's login, we can default to showing her data.
+    const loggedInUserEmail = localStorage.getItem('commitChronicleLoggedInUser');
+    if (loggedInUserEmail === "nisha.kashyap@innogent.in") {
+      setHasConnectedAccounts(true); // Assume Nisha's accounts are connected for demo
+    } else {
+      setHasConnectedAccounts(githubConnected || jiraConnected);
+    }
+
 
     setIsLoading(false);
   }, []);
@@ -68,8 +78,6 @@ export default function KeyMetricsCard() {
   }
 
   if (!hasConnectedAccounts && tasksCompleted === 0) { 
-    // If no accounts are connected (simulated) and no manual tasks logged, prompt to connect.
-    // If tasks are logged manually, we show those even if accounts aren't connected.
     return (
       <Card className="shadow-lg">
         <CardHeader>
@@ -137,3 +145,5 @@ export default function KeyMetricsCard() {
     </Card>
   );
 }
+
+    

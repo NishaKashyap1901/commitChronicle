@@ -35,6 +35,12 @@ interface SummaryGeneratorProps {
   showCardHeader?: boolean;
 }
 
+const defaultValues: SummaryGeneratorFormValues = {
+  commits: `- Implemented new user authentication flow (login, registration, password reset).\n- Refactored dashboard components for better performance.\n- Fixed critical bug in the data export module.`,
+  jiraUpdates: `- JIRA-123: User login broken - RESOLVED\n- JIRA-456: Design new dashboard widgets - IN PROGRESS\n- JIRA-789: Investigate slow loading times - TO DO\n- Completed sprint tasks for feature X.`,
+  manualLogs: `- Attended team meeting on Q3 planning.\n- Mentored junior developer on React best practices.\n- Researched new charting libraries for upcoming feature.`,
+};
+
 export default function SummaryGenerator({ showCardHeader = true }: SummaryGeneratorProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -42,11 +48,7 @@ export default function SummaryGenerator({ showCardHeader = true }: SummaryGener
 
   const form = useForm<SummaryGeneratorFormValues>({
     resolver: zodResolver(summaryGeneratorSchema),
-    defaultValues: {
-      commits: "",
-      jiraUpdates: "",
-      manualLogs: "",
-    },
+    defaultValues,
     mode: "onChange",
   });
 

@@ -26,11 +26,11 @@ export default function SettingsPage() {
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="name">Full Name</Label>
-            <Input id="name" defaultValue="Demo User" />
+            <Input id="name" defaultValue="Nisha Kashyap" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email Address</Label>
-            <Input id="email" type="email" defaultValue="user@example.com" />
+            <Input id="email" type="email" defaultValue="nisha.kashyap@innogent.in" />
           </div>
           <Button>Save Profile</Button>
         </CardContent>
@@ -47,7 +47,7 @@ export default function SettingsPage() {
               <Github className="h-8 w-8 text-foreground" />
               <div>
                 <h3 className="font-medium">Git Provider</h3>
-                <p className="text-sm text-muted-foreground">Connected as: demo-user-git</p>
+                <p className="text-sm text-muted-foreground">Connected as: nisha-kashyap-git</p>
               </div>
             </div>
             <Button variant="outline" size="sm">
@@ -60,7 +60,7 @@ export default function SettingsPage() {
               <Workflow className="h-8 w-8 text-blue-600" />
               <div>
                 <h3 className="font-medium">Jira</h3>
-                <p className="text-sm text-muted-foreground">Connected to: example.atlassian.net</p>
+                <p className="text-sm text-muted-foreground">Connected to: nisha-k.atlassian.net</p>
               </div>
             </div>
             <Button variant="outline" size="sm">

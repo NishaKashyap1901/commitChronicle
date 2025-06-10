@@ -9,28 +9,66 @@ import { BookOpenCheck, LogIn } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import React from "react";
+import { useToast } from "@/hooks/use-toast";
+
+interface RegisteredUser {
+  name: string;
+  email: string;
+  password?: string; // Password should not ideally be stored, but for this simulation it is.
+}
 
 export default function LoginPage() {
   const router = useRouter();
+  const { toast } = useToast();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
   const handleLogin = () => {
-    // Simulate login for nisha.kashyap@innogent.in
-    if (email === "nisha.kashyap@innogent.in" && password === "Nisha@2245") {
-      // In a real app, you would set some auth state (e.g., context, token in localStorage)
-      // For now, we just redirect.
-      console.log("Nisha Kashyap logged in (simulated)");
-      router.push("/dashboard");
-    } else if (email && password) {
-      // Generic login attempt for demonstration if not Nisha
-      // This part can be removed if only Nisha's login is to be simulated
-      console.log("Attempting to login with (generic):", { email, password });
-      // router.push("/dashboard"); // Or show error for non-Nisha credentials
-      alert("Invalid credentials. Only Nisha's simulated login is configured.");
+    if (!email || !password) {
+      toast({
+        title: "Login Failed",
+        description: "Please enter both email and password.",
+        variant: "destructive",
+      });
+      return;
     }
-     else {
-      alert("Please enter email and password.");
+
+    // Check for Nisha's hardcoded credentials first
+    if (email === "nisha.kashyap@innogent.in" && password === "Nisha@2245") {
+      console.log("Nisha Kashyap logged in (simulated hardcoded)");
+      // In a real app, set auth state (e.g., context, token, etc.)
+      // For this simulation, we can store the logged-in user's email in localStorage
+      // to potentially personalize the experience further if needed.
+      localStorage.setItem('commitChronicleLoggedInUser', email); 
+      router.push("/dashboard");
+      return;
+    }
+
+    // Check for users registered in localStorage
+    try {
+      const existingUsersString = localStorage.getItem('commitChronicleRegisteredUsers');
+      const existingUsers: RegisteredUser[] = existingUsersString ? JSON.parse(existingUsersString) : [];
+      
+      const foundUser = existingUsers.find(user => user.email === email && user.password === password);
+
+      if (foundUser) {
+        console.log(`${foundUser.name} logged in (simulated from localStorage)`);
+        localStorage.setItem('commitChronicleLoggedInUser', foundUser.email);
+        router.push("/dashboard");
+      } else {
+        toast({
+          title: "Login Failed",
+          description: "Invalid email or password.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error during login (localStorage):", error);
+      toast({
+        title: "Login Error",
+        description: "An unexpected error occurred during login.",
+        variant: "destructive",
+      });
     }
   };
 

@@ -5,14 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart3, GitCommit, ListChecks, CheckSquare, Clock, AlertTriangle } from "lucide-react";
 
 export default function KeyMetricsCard() {
-  // Data would be fetched based on user ID and date range (last 6 months)
-  // Initialize with 0 or appropriate empty state values
-  const commitsLast6Months = 0; 
-  const tasksCompletedLast6Months = 0; 
-  const activePRs = 0; 
-  const jiraToDo = 0; 
-  const jiraInProgress = 0; 
-  const jiraDoneLast6Months = 0; 
+  // Sample data, notionally for nisha.kashyap@innogent.in
+  const commitsLast6Months = 125; 
+  const tasksCompletedLast6Months = 78; 
+  const activePRs = 3; 
+  const jiraToDo = 5; 
+  const jiraInProgress = 2; 
+  const jiraDoneLast6Months = 45; 
 
   return (
     <Card className="shadow-lg">

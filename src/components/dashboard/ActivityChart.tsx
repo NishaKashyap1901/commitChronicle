@@ -18,9 +18,19 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart"
 import { BarChart3Icon } from "lucide-react";
+import { addDays, format } from "date-fns";
 
-// Initialize with empty data, to be populated by actual data fetching
-const chartData: { date: string; commits: number; tasks: number }[] = [];
+// Sample data, notionally for nisha.kashyap@innogent.in
+const today = new Date();
+const chartData = [
+  { date: format(addDays(today, -6), "yyyy-MM-dd"), commits: 3, tasks: 1 },
+  { date: format(addDays(today, -5), "yyyy-MM-dd"), commits: 5, tasks: 2 },
+  { date: format(addDays(today, -4), "yyyy-MM-dd"), commits: 2, tasks: 0 },
+  { date: format(addDays(today, -3), "yyyy-MM-dd"), commits: 4, tasks: 3 },
+  { date: format(addDays(today, -2), "yyyy-MM-dd"), commits: 1, tasks: 1 },
+  { date: format(addDays(today, -1), "yyyy-MM-dd"), commits: 6, tasks: 2 },
+  { date: format(today, "yyyy-MM-dd"), commits: 3, tasks: 1 },
+];
 
 const chartConfig = {
   commits: {
@@ -29,20 +39,19 @@ const chartConfig = {
   },
   tasks: {
     label: "Tasks Completed",
-    color: "hsl(var(--secondary))", // Using secondary for contrast
+    color: "hsl(var(--accent))", // Using accent for better visual distinction from primary
   },
 } satisfies ChartConfig;
 
 export default function ActivityChart() {
-  // In a real app, chartData would be fetched or filtered based on DateFilterBar state
   return (
     <Card className="shadow-md">
       <CardHeader>
         <CardTitle className="text-xl flex items-center">
           <BarChart3Icon className="mr-2 h-5 w-5 text-primary" />
-          Activity Overview
+          Activity Overview (Last 7 Days)
         </CardTitle>
-        <CardDescription>Overview of commits and tasks completed. Awaiting real data.</CardDescription>
+        <CardDescription>Overview of commits and tasks completed for the selected period.</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="min-h-[300px] w-full">

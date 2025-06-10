@@ -14,7 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 interface RegisteredUser {
   name: string;
   email: string;
-  password?: string; // Password should not ideally be stored, but for this simulation it is.
+  password?: string; 
 }
 
 export default function LoginPage() {
@@ -33,13 +33,15 @@ export default function LoginPage() {
       return;
     }
 
+    // Clear previous user session info
+    localStorage.removeItem('commitChronicleLoggedInUser');
+    localStorage.removeItem('commitChronicleLoggedInUserName');
+
     // Check for Nisha's hardcoded credentials first
     if (email === "nisha.kashyap@innogent.in" && password === "Nisha@2245") {
       console.log("Nisha Kashyap logged in (simulated hardcoded)");
-      // In a real app, set auth state (e.g., context, token, etc.)
-      // For this simulation, we can store the logged-in user's email in localStorage
-      // to potentially personalize the experience further if needed.
-      localStorage.setItem('commitChronicleLoggedInUser', email); 
+      localStorage.setItem('commitChronicleLoggedInUser', email);
+      localStorage.setItem('commitChronicleLoggedInUserName', "Nisha Kashyap");
       router.push("/dashboard");
       return;
     }
@@ -54,6 +56,7 @@ export default function LoginPage() {
       if (foundUser) {
         console.log(`${foundUser.name} logged in (simulated from localStorage)`);
         localStorage.setItem('commitChronicleLoggedInUser', foundUser.email);
+        localStorage.setItem('commitChronicleLoggedInUserName', foundUser.name);
         router.push("/dashboard");
       } else {
         toast({

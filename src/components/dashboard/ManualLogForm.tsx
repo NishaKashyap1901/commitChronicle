@@ -25,7 +25,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon, BookPlus, Loader2, LinkIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import type { TimelineEvent } from "./TimelineView"; // Import TimelineEvent type
+import type { TimelineEvent } from "./TimelineView"; 
 
 const manualLogFormSchema = z.object({
   title: z.string().min(5, {
@@ -106,8 +106,23 @@ export default function ManualLogForm() {
 
   async function onSubmit(data: ManualLogFormValues) {
     setIsSubmitting(true);
+    const loggedInUserEmail = localStorage.getItem('commitChronicleLoggedInUser');
+    const loggedInUserName = localStorage.getItem('commitChronicleLoggedInUserName') || "Demo User";
+
+    if (!loggedInUserEmail) {
+        toast({
+            title: "Error",
+            description: "No logged-in user found. Please log in again.",
+            variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+    }
+    
+    const timelineKey = `commitChronicleTimelineEvents_${loggedInUserEmail}`;
+
     try {
-      const result = await saveLogToCloud(data);
+      const result = await saveLogToCloud(data); // Simulate cloud save
 
       if (result.success) {
         toast({
@@ -115,26 +130,25 @@ export default function ManualLogForm() {
           description: result.message,
         });
 
-        // Save to localStorage for TimelineView
-        const timelineEventsString = localStorage.getItem('commitChronicleTimelineEvents');
+        const timelineEventsString = localStorage.getItem(timelineKey);
         const timelineEvents: TimelineEvent[] = timelineEventsString ? JSON.parse(timelineEventsString) : [];
         
         const { iconName, badgeText } = getIconAndBadgeForCategory(data.category);
 
         const newEvent: TimelineEvent = {
-          id: Date.now(), // Simple unique ID
-          type: data.category as TimelineEvent['type'], // Cast for now, ensure categories align
+          id: Date.now(), 
+          type: data.category as TimelineEvent['type'], 
           title: data.title,
           details: data.details || "",
           date: format(data.date, "MMM dd, yyyy"),
-          author: "Nisha Kashyap", // Placeholder, replace with actual user later
+          author: loggedInUserName, 
           iconName: iconName,
           badgeText: badgeText,
           relatedLink: data.relatedLink || undefined,
         };
 
-        timelineEvents.unshift(newEvent); // Add to the beginning of the array
-        localStorage.setItem('commitChronicleTimelineEvents', JSON.stringify(timelineEvents));
+        timelineEvents.unshift(newEvent); 
+        localStorage.setItem(timelineKey, JSON.stringify(timelineEvents));
         
         form.reset(defaultValues); 
         form.setValue("date", new Date(), {

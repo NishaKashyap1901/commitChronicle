@@ -14,7 +14,6 @@ import Link from 'next/link';
 import { useRouter } from "next/navigation";
 
 
-// Define a mapping from iconName to actual Lucide components
 const iconComponents: Record<string, React.ElementType> = {
   GitCommit: GitCommit,
   GitPullRequest: GitPullRequest,
@@ -31,12 +30,12 @@ const iconComponents: Record<string, React.ElementType> = {
 
 export interface TimelineEvent {
   id: number;
-  type: "commit" | "pr" | "jira_activity" | "task_completed" | "blocker_encountered" | "milestone_achieved" | "meeting_notes" | "documentation_update" | "general_log" | "log"; // "log" is for older compatibility
+  type: "commit" | "pr" | "jira_activity" | "task_completed" | "blocker_encountered" | "milestone_achieved" | "meeting_notes" | "documentation_update" | "general_log" | "git_activity"; 
   title: string;
   details: string;
   date: string;
   author: string;
-  iconName: string; // Store the name of the icon
+  iconName: string; 
   badgeText: string;
   relatedLink?: string;
 }
@@ -44,14 +43,14 @@ export interface TimelineEvent {
 const ITEMS_PER_PAGE = 5;
 const today = new Date();
 
-const getDefaultSampleEvents = (): TimelineEvent[] => [
+const getDefaultSampleEvents = (userName: string): TimelineEvent[] => [
   {
     id: 1,
     type: "git_activity",
     title: "feat: Implement user authentication module",
     details: "Added new endpoints and UI for login/registration.",
     date: format(subDays(today, 1), "MMM dd, yyyy"),
-    author: "Nisha Kashyap",
+    author: userName,
     iconName: "GitCommit",
     badgeText: "Git",
     relatedLink: "https://github.com/example/commit/abc123xyz"
@@ -62,7 +61,7 @@ const getDefaultSampleEvents = (): TimelineEvent[] => [
     title: "Refactor: Dashboard widget components",
     details: "PR #42 - Improved performance and code structure.",
     date: format(subDays(today, 2), "MMM dd, yyyy"),
-    author: "Nisha Kashyap",
+    author: userName,
     iconName: "GitPullRequest",
     badgeText: "Git PR",
     relatedLink: "https://github.com/example/pull/42"
@@ -73,7 +72,7 @@ const getDefaultSampleEvents = (): TimelineEvent[] => [
     title: "BUG-123: Fix login button responsiveness",
     details: "Status changed from In Progress to Done.",
     date: format(subDays(today, 2), "MMM dd, yyyy"),
-    author: "Nisha Kashyap",
+    author: userName,
     iconName: "Workflow",
     badgeText: "Jira Update",
     relatedLink: "https://jira.example.com/browse/BUG-123"
@@ -84,7 +83,7 @@ const getDefaultSampleEvents = (): TimelineEvent[] => [
     title: "Client meeting and feature planning session",
     details: "Discussed Q3 roadmap and new feature requests.",
     date: format(subDays(today, 3), "MMM dd, yyyy"),
-    author: "Nisha Kashyap",
+    author: userName,
     iconName: "Users",
     badgeText: "Meeting"
   },
@@ -94,7 +93,7 @@ const getDefaultSampleEvents = (): TimelineEvent[] => [
     title: "docs: Update API documentation for v1.2",
     details: "Added examples for new /summary endpoint.",
     date: format(subDays(today, 4), "MMM dd, yyyy"),
-    author: "Nisha Kashyap",
+    author: userName,
     iconName: "FileText",
     badgeText: "Docs"
   },
@@ -104,7 +103,7 @@ const getDefaultSampleEvents = (): TimelineEvent[] => [
     title: "Onboard new team member",
     details: "Completed onboarding checklist for Alex.",
     date: format(subDays(today, 5), "MMM dd, yyyy"),
-    author: "Nisha Kashyap",
+    author: userName,
     iconName: "CheckCircle",
     badgeText: "Task Done"
   },
@@ -114,7 +113,7 @@ const getDefaultSampleEvents = (): TimelineEvent[] => [
     title: "Research: Explored new charting libraries",
     details: "Evaluated Recharts, Nivo, and Chart.js for dashboard integration.",
     date: format(subDays(today, 6), "MMM dd, yyyy"),
-    author: "Nisha Kashyap",
+    author: userName,
     iconName: "BookOpen",
     badgeText: "Log"
   },
@@ -124,7 +123,7 @@ const getDefaultSampleEvents = (): TimelineEvent[] => [
     title: "Project Alpha: Phase 1 Complete",
     details: "All core features for phase 1 deployed successfully to staging.",
     date: format(subDays(today, 7), "MMM dd, yyyy"),
-    author: "Nisha Kashyap",
+    author: userName,
     iconName: "Award",
     badgeText: "Milestone"
   },
@@ -134,7 +133,7 @@ const getDefaultSampleEvents = (): TimelineEvent[] => [
     title: "API Rate Limiting Issue",
     details: "Third-party API for data sync is hitting rate limits, impacting real-time updates.",
     date: format(subDays(today, 8), "MMM dd, yyyy"),
-    author: "Nisha Kashyap",
+    author: userName,
     iconName: "AlertTriangle",
     badgeText: "Blocker"
   },
@@ -144,7 +143,7 @@ const getDefaultSampleEvents = (): TimelineEvent[] => [
     title: "TASK-789: Prepare Q4 Presentation",
     details: "Moved from To Do to In Progress. Started drafting slides.",
     date: format(subDays(today, 9), "MMM dd, yyyy"),
-    author: "Nisha Kashyap",
+    author: userName,
     iconName: "Workflow",
     badgeText: "Jira Update",
     relatedLink: "https://jira.example.com/browse/TASK-789"
@@ -153,7 +152,7 @@ const getDefaultSampleEvents = (): TimelineEvent[] => [
 
 
 const getIconElement = (iconName: string, type: TimelineEvent["type"]): JSX.Element => {
-  const IconComponent = iconComponents[iconName] || BookOpen; // Default to BookOpen if iconName is not found
+  const IconComponent = iconComponents[iconName] || BookOpen; 
   let iconClassName = "h-5 w-5";
   switch (type) {
     case "commit":
@@ -164,7 +163,7 @@ const getIconElement = (iconName: string, type: TimelineEvent["type"]): JSX.Elem
       iconClassName += " text-foreground";
       break;
     case "jira_activity":
-      iconClassName += " text-blue-500"; // Specific color for Jira
+      iconClassName += " text-blue-500"; 
       break;
     case "task_completed":
       iconClassName += " text-green-500";
@@ -182,7 +181,6 @@ const getIconElement = (iconName: string, type: TimelineEvent["type"]): JSX.Elem
       iconClassName += " text-indigo-500";
       break;
     case "general_log":
-    case "log": // For backward compatibility with old "log" type
     default:
       iconClassName += " text-muted-foreground";
   }
@@ -194,7 +192,7 @@ const getBadgeVariant = (type: TimelineEvent['type'], badgeText: string): "defau
     return "destructive";
   }
   if (type === "milestone_achieved" || type === "task_completed") {
-    return "default"; // Use primary color for positive events
+    return "default"; 
   }
   return "outline";
 };
@@ -205,29 +203,43 @@ export default function TimelineView() {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [allEvents, setAllEvents] = React.useState<TimelineEvent[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [loggedInUserName, setLoggedInUserName] = React.useState<string>("Demo User");
+  const [loggedInUserEmail, setLoggedInUserEmail] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    setIsLoading(true);
-    const storedEventsString = localStorage.getItem('commitChronicleTimelineEvents');
-    let loadedEvents: TimelineEvent[] = [];
-    if (storedEventsString) {
-      try {
-        loadedEvents = JSON.parse(storedEventsString);
-      } catch (e) {
-        console.error("Failed to parse timeline events from localStorage", e);
-        loadedEvents = getDefaultSampleEvents(); // Fallback to default (Nisha's) data
-        localStorage.setItem('commitChronicleTimelineEvents', JSON.stringify(loadedEvents));
+    const email = localStorage.getItem('commitChronicleLoggedInUser');
+    const name = localStorage.getItem('commitChronicleLoggedInUserName') || "Demo User";
+    setLoggedInUserEmail(email);
+    setLoggedInUserName(name);
+
+    if (email) {
+      setIsLoading(true);
+      const timelineKey = `commitChronicleTimelineEvents_${email}`;
+      const storedEventsString = localStorage.getItem(timelineKey);
+      let loadedEvents: TimelineEvent[] = [];
+
+      if (storedEventsString) {
+        try {
+          loadedEvents = JSON.parse(storedEventsString);
+        } catch (e) {
+          console.error("Failed to parse timeline events from localStorage", e);
+          loadedEvents = getDefaultSampleEvents(name); 
+          localStorage.setItem(timelineKey, JSON.stringify(loadedEvents));
+        }
+      } else {
+        loadedEvents = getDefaultSampleEvents(name); 
+        localStorage.setItem(timelineKey, JSON.stringify(loadedEvents));
       }
+      loadedEvents.sort((a, b) => b.id - a.id); 
+      setAllEvents(loadedEvents);
+      setIsLoading(false);
     } else {
-      loadedEvents = getDefaultSampleEvents(); // Load default (Nisha's) data if localStorage is empty
-      localStorage.setItem('commitChronicleTimelineEvents', JSON.stringify(loadedEvents));
+      // No user logged in, perhaps show a prompt or empty state
+      setAllEvents([]); 
+      setIsLoading(false);
+      // router.push('/login'); // Optionally redirect if no user
     }
-    // Ensure events are sorted by date (newest first) if IDs are timestamps
-    // Or rely on unshift in ManualLogForm to keep newest first
-    loadedEvents.sort((a, b) => b.id - a.id); // Assuming higher ID means newer
-    setAllEvents(loadedEvents);
-    setIsLoading(false);
-  }, []);
+  }, [router, loggedInUserEmail]); // Rerun if loggedInUserEmail changes (e.g. after login)
 
 
   const totalPages = Math.max(1, Math.ceil(allEvents.length / ITEMS_PER_PAGE));
@@ -263,6 +275,24 @@ export default function TimelineView() {
     );
   }
 
+  if (!loggedInUserEmail && !isLoading) {
+    return (
+      <Card className="shadow-lg">
+        <CardHeader>
+          <CardTitle className="text-2xl">Activity Timeline</CardTitle>
+        </CardHeader>
+        <CardContent className="text-center py-10">
+            <Info className="mx-auto h-12 w-12 text-muted-foreground" />
+            <h3 className="mt-4 text-lg font-medium">Please Log In</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Log in to view your personalized activity timeline.
+            </p>
+            <Button onClick={() => router.push('/login')} className="mt-4">Go to Login</Button>
+        </CardContent>
+      </Card>
+    );
+  }
+
 
   return (
     <Card className="shadow-lg">
@@ -271,15 +301,16 @@ export default function TimelineView() {
         <CardDescription>Chronological view of your development activities. Add manual logs or connect accounts in settings for full data.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="min-h-[320px]"> {/* Ensure a minimum height for the table area */}
+        <div className="min-h-[320px]"> 
           {allEvents.length === 0 && !isLoading ? (
              <div className="text-center py-10">
                 <Info className="mx-auto h-12 w-12 text-muted-foreground" />
-                <h3 className="mt-4 text-lg font-medium">No Activity Yet</h3>
+                <h3 className="mt-4 text-lg font-medium">No Activity Yet for {loggedInUserName}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">
                   Add some manual logs or connect your Git/Jira accounts in settings to populate your timeline.
                 </p>
-                <Button onClick={handleConnectPrompt} className="mt-4">Go to Settings</Button>
+                <Button onClick={() => router.push('/dashboard/manual-log')} className="mt-4 mr-2">Add Manual Log</Button>
+                <Button onClick={handleConnectPrompt} className="mt-4" variant="outline">Go to Settings</Button>
             </div>
           ) : (
             <Table>
@@ -318,7 +349,7 @@ export default function TimelineView() {
                     </TableRow>
                   ))
                 ) : (
-                   !isLoading && ( // Only show "No activity for this page" if not loading and currentEvents is empty but allEvents might not be
+                   !isLoading && ( 
                     <TableRow>
                         <TableCell colSpan={5} className="text-center py-10">
                         <div className="flex flex-col items-center gap-2 text-muted-foreground">
@@ -363,5 +394,3 @@ export default function TimelineView() {
     </Card>
   );
 }
-
-    

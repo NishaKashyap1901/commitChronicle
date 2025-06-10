@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { format, subDays } from "date-fns";
 import Link from 'next/link';
+import { useRouter } from "next/navigation";
 
 
 // Define a mapping from iconName to actual Lucide components
@@ -159,6 +160,7 @@ const getBadgeVariant = (type: TimelineEvent['type'], badgeText: string): "defau
 
 
 export default function TimelineView() {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = React.useState(1);
   const [allEvents, setAllEvents] = React.useState<TimelineEvent[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -172,11 +174,11 @@ export default function TimelineView() {
         loadedEvents = JSON.parse(storedEventsString);
       } catch (e) {
         console.error("Failed to parse timeline events from localStorage", e);
-        loadedEvents = getDefaultSampleEvents();
+        loadedEvents = getDefaultSampleEvents(); // Fallback to default (Nisha's) data
         localStorage.setItem('commitChronicleTimelineEvents', JSON.stringify(loadedEvents));
       }
     } else {
-      loadedEvents = getDefaultSampleEvents();
+      loadedEvents = getDefaultSampleEvents(); // Load default (Nisha's) data if localStorage is empty
       localStorage.setItem('commitChronicleTimelineEvents', JSON.stringify(loadedEvents));
     }
     // Ensure events are sorted by date (newest first) if IDs are timestamps
@@ -201,7 +203,7 @@ export default function TimelineView() {
   };
 
   const handleConnectPrompt = () => {
-    alert("Please connect your Git/Jira accounts in Settings to see real activity.");
+    router.push('/dashboard/settings');
   };
 
 
@@ -225,7 +227,7 @@ export default function TimelineView() {
     <Card className="shadow-lg">
       <CardHeader>
         <CardTitle className="text-2xl">Activity Timeline</CardTitle>
-        <CardDescription>Chronological view of your development activities. Add manual logs or connect accounts in settings.</CardDescription>
+        <CardDescription>Chronological view of your development activities. Add manual logs or connect accounts in settings for full data.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="min-h-[320px]"> {/* Ensure a minimum height for the table area */}
@@ -236,7 +238,7 @@ export default function TimelineView() {
                 <p className="mt-1 text-sm text-muted-foreground">
                   Add some manual logs or connect your Git/Jira accounts in settings to populate your timeline.
                 </p>
-                <Button onClick={() => router.push('/dashboard/settings')} className="mt-4">Go to Settings</Button>
+                <Button onClick={handleConnectPrompt} className="mt-4">Go to Settings</Button>
             </div>
           ) : (
             <Table>

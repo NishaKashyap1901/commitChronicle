@@ -5,9 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart3, GitCommit, ListChecks, CheckSquare, Clock, AlertTriangle, Info } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import type { TimelineEvent } from "./TimelineView"; // Import TimelineEvent type
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function KeyMetricsCard() {
-  // Static sample data, notionally for nisha.kashyap@innogent.in, except for Tasks Completed
+  const router = useRouter();
+  // Static sample data, notionally for nisha.kashyap@innogent.in
   const commitsLast6Months = 125;
   // tasksCompletedLast6Months will be dynamically loaded from localStorage
   const activePRs = 3;
@@ -17,7 +20,7 @@ export default function KeyMetricsCard() {
 
   const [tasksCompleted, setTasksCompleted] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [hasConnectedAccounts, setHasConnectedAccounts] = useState(true); // Assume connected for now
+  const [hasConnectedAccounts, setHasConnectedAccounts] = useState(false); // Default to false, update based on actual integration status
 
   useEffect(() => {
     setIsLoading(true);
@@ -32,20 +35,19 @@ export default function KeyMetricsCard() {
         setTasksCompleted(0); // Fallback on error
       }
     } else {
-      // If no events in localStorage, it means no manual logs yet, so tasks completed from manual logs is 0.
-      // This also simulates the state before connecting accounts.
       setTasksCompleted(0);
     }
-    // Simulate check for connected accounts (in a real app, this would be a state from context/API)
-    // For now, we'll assume if there's no local storage, accounts might not be connected for other metrics.
-    setHasConnectedAccounts(!!storedEventsString); // Basic check, improve with real integration status
+    // In a real app, this would check actual integration status (e.g., from context/API)
+    // For now, we simulate it. If you implement integration connections, update this logic.
+    const githubConnected = localStorage.getItem('githubConnected') === 'true';
+    const jiraConnected = localStorage.getItem('jiraConnected') === 'true';
+    setHasConnectedAccounts(githubConnected || jiraConnected);
+
     setIsLoading(false);
   }, []);
 
-  // Placeholder for navigating to settings
   const goToSettings = () => {
-    // In a real app, use Next.js router: router.push('/dashboard/settings');
-    alert("Navigate to Settings page to connect accounts.");
+    router.push('/dashboard/settings');
   };
 
   if (isLoading) {
@@ -65,7 +67,9 @@ export default function KeyMetricsCard() {
     );
   }
 
-  if (!isLoading && !hasConnectedAccounts && tasksCompleted === 0) { // A more nuanced check might be needed
+  if (!hasConnectedAccounts && tasksCompleted === 0) { 
+    // If no accounts are connected (simulated) and no manual tasks logged, prompt to connect.
+    // If tasks are logged manually, we show those even if accounts aren't connected.
     return (
       <Card className="shadow-lg">
         <CardHeader>
@@ -82,6 +86,9 @@ export default function KeyMetricsCard() {
           <Button onClick={goToSettings} className="mt-4" variant="outline">
             Go to Settings
           </Button>
+           <p className="text-xs text-muted-foreground mt-3">
+            (Manual task logs will still appear here)
+          </p>
         </CardContent>
       </Card>
     );
@@ -98,7 +105,7 @@ export default function KeyMetricsCard() {
       <CardContent className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6">
         <div className="flex flex-col items-center justify-center p-4 border rounded-lg bg-card hover:shadow-md transition-shadow">
           <GitCommit className="h-8 w-8 mb-2 text-primary" />
-          <p className="text-2xl font-bold">{commitsLast6Months}</p>
+          <p className="text-2xl font-bold">{hasConnectedAccounts ? commitsLast6Months : 0}</p>
           <p className="text-sm text-muted-foreground text-center">Commits</p>
         </div>
         <div className="flex flex-col items-center justify-center p-4 border rounded-lg bg-card hover:shadow-md transition-shadow">
@@ -108,22 +115,22 @@ export default function KeyMetricsCard() {
         </div>
         <div className="flex flex-col items-center justify-center p-4 border rounded-lg bg-card hover:shadow-md transition-shadow">
           <AlertTriangle className="h-8 w-8 mb-2 text-primary" />
-          <p className="text-2xl font-bold">{activePRs}</p>
+          <p className="text-2xl font-bold">{hasConnectedAccounts ? activePRs : 0}</p>
           <p className="text-sm text-muted-foreground text-center">Active PRs</p>
         </div>
         <div className="flex flex-col items-center justify-center p-4 border rounded-lg bg-card hover:shadow-md transition-shadow">
           <Clock className="h-8 w-8 mb-2 text-primary" />
-          <p className="text-2xl font-bold">{jiraToDo}</p>
+          <p className="text-2xl font-bold">{hasConnectedAccounts ? jiraToDo : 0}</p>
           <p className="text-sm text-muted-foreground text-center">Jira: To Do</p>
         </div>
         <div className="flex flex-col items-center justify-center p-4 border rounded-lg bg-card hover:shadow-md transition-shadow">
           <BarChart3 className="h-8 w-8 mb-2 text-primary" />
-          <p className="text-2xl font-bold">{jiraInProgress}</p>
+          <p className="text-2xl font-bold">{hasConnectedAccounts ? jiraInProgress : 0}</p>
           <p className="text-sm text-muted-foreground text-center">Jira: In Progress</p>
         </div>
         <div className="flex flex-col items-center justify-center p-4 border rounded-lg bg-card hover:shadow-md transition-shadow">
           <CheckSquare className="h-8 w-8 mb-2 text-primary" />
-          <p className="text-2xl font-bold">{jiraDoneLast6Months}</p>
+          <p className="text-2xl font-bold">{hasConnectedAccounts ? jiraDoneLast6Months : 0}</p>
           <p className="text-sm text-muted-foreground text-center">Jira: Done</p>
         </div>
       </CardContent>
